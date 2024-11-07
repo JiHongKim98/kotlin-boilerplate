@@ -1,0 +1,45 @@
+server:
+  node: 1
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 5s
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+    open-in-view: false
+
+  flyway:
+    url: jdbc:mysql://localhost:3306/example?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    user: example
+    password: example
+    baseline-on-migrate: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/example?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: example
+    password: example
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      repositories:
+        enabled: false
+
+logging:
+  level:
+    root: info
