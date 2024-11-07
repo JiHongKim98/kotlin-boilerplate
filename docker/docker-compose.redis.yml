@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: redis7-local
+    command: redis-server --port 6379
+    restart: always
+    hostname: root
+    labels:
+      - "mode:standalone"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-local-data:/data
+
+volumes:
+  redis-local-data:

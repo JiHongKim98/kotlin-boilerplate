@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql:8.1.0
+    container_name: mysql8-local
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+      MYSQL_DATABASE: example
+      MYSQL_ROOT_PASSWORD: example
+      TZ: 'Asia/Seoul'
+    volumes:
+      - mysql-local-db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql-local-db:
