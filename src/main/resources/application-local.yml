@@ -40,6 +40,11 @@ spring:
       repositories:
         enabled: false
 
+jwt:
+  secret-key: abcd-efgh-ijkl-mnop-qrst-uvwx-yz01-2345-6789
+  access-exp: 987654321
+  refresh-exp: 987654321
+
 logging:
   level:
     root: info
