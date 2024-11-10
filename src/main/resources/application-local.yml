@@ -9,6 +9,14 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  cookie:
+    path: /
+    max-age: 9876543210
+    same-site: Lax
+    domain: localhost
+    secure: false
+    http-only: true
+
   jpa:
     properties:
       hibernate:
@@ -39,6 +47,28 @@ spring:
       password:
       repositories:
         enabled: false
+
+  security:
+    oauth2:
+      success-redirect-url: http://localhost:5173
+      client:
+        registration:
+          kakao:
+            client-authentication-method: client_secret_post
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: ${KAKAO_REDIRECT_URI}
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            scope:
+              - profile_nickname
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
 jwt:
   secret-key: abcd-efgh-ijkl-mnop-qrst-uvwx-yz01-2345-6789
