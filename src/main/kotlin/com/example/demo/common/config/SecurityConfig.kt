@@ -1,5 +1,7 @@
 package com.example.demo.common.config
 
+import com.example.demo.auth.infrastructure.oauth.OAuthAuthenticationSuccessHandler
+import com.example.demo.auth.infrastructure.oauth.OAuthAuthorizationRequestRepository
 import com.example.demo.common.security.CustomAuthenticationEntryPoint
 import com.example.demo.common.security.JwtAuthenticationFilter
 import com.example.demo.common.security.JwtAuthenticationProvider
@@ -9,6 +11,7 @@ import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -26,6 +29,8 @@ class SecurityConfig {
     fun filterChain(
         httpSecurity: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
+        oAuthAuthenticationSuccessHandler: OAuthAuthenticationSuccessHandler,
+        oAuthAuthorizationRequestRepository: OAuthAuthorizationRequestRepository,
     ): SecurityFilterChain {
         return httpSecurity
             .cors { it.configurationSource(corsConfigurationSource()) }
@@ -44,6 +49,13 @@ class SecurityConfig {
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .oauth2Login { oauthConfig ->
+                oauthConfig.userInfoEndpoint {
+                    it.userService(DefaultOAuth2UserService())
+                }.authorizationEndpoint { endpoint ->
+                    endpoint.authorizationRequestRepository(oAuthAuthorizationRequestRepository)
+                }.successHandler(oAuthAuthenticationSuccessHandler)
+            }
             .build()
     }
 
