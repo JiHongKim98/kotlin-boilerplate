@@ -4,7 +4,18 @@ server:
 
 spring:
   lifecycle:
-    timeout-per-shutdown-phase: 5s
+    timeout-per-shutdown-phase: 10s
+
+  task:
+    execution:
+      pool:
+        max-size: 10
+        core-size: 10
+        queue-capacity: 10
+        keep-alive: 30s
+      shutdown:
+        await-termination: true
+        await-termination-period: 5s
 
   jackson:
     property-naming-strategy: SNAKE_CASE
