@@ -12,14 +12,14 @@ import org.springframework.stereotype.Repository
 @Repository
 class RedisAuthTokenRepository(
     private val redisTemplate: RedisTemplate<String, String>,
-    @Value("\${jwt.refresh-exp}") private val millisTimeToLive: Long,
+    @Value("\${jwt.refresh-exp}") private val timeout: Long,
 ) : AuthTokenRepository {
 
     override fun save(authToken: AuthToken): AuthToken {
         redisTemplate.opsForValue().setWithSerialize(
             key = authToken.tokenId,
             value = authToken,
-            millisTTL = millisTimeToLive
+            timeout = timeout
         )
         return authToken
     }

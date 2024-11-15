@@ -2,15 +2,14 @@ package com.example.demo.common.utils.redis
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.data.redis.core.ValueOperations
-import java.time.Duration
+import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
 private val objectMapper = jacksonObjectMapper()
 
-fun ValueOperations<String, String>.setWithSerialize(key: String, value: Any, millisTTL: Long? = null) {
+fun ValueOperations<String, String>.setWithSerialize(key: String, value: Any, timeout: Long? = null) {
     val valueAsString = objectMapper.writeValueAsString(value)
-    millisTTL
-        ?.let { set(key, valueAsString, Duration.ofMillis(millisTTL)) }
+    timeout?.let { set(key, valueAsString, timeout, TimeUnit.MILLISECONDS) }
         ?: set(key, valueAsString)
 }
 
