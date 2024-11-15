@@ -30,16 +30,21 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
+    implementation("com.github.f4b6a3:tsid-creator:5.2.6")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.4")
     runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.4")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.4")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
-    implementation("com.github.f4b6a3:tsid-creator:5.2.6")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.4")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.4")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.4")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.8.1")
+    testImplementation("io.kotest:kotest-framework-datatest:5.8.1")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.1")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
+    testImplementation("io.mockk:mockk:1.13.13")
 }
 
 kotlin {
@@ -56,4 +61,9 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    useJUnitPlatform()
+    systemProperties["spring.profiles.active"] = "test"
 }
