@@ -15,8 +15,13 @@ class Name(
     }
 
     private fun validate() {
-        require(value.length in MIN_LEN..MAX_LEN) { "이름이 너무 길거나 짧습니다." }
-        require(value.matches(NAME_REGEX.toRegex())) { "형식에 맞지 않는 이름입니다." }
+        require(value.length in MIN_LEN..MAX_LEN) {
+            "name length must be between $MIN_LEN and $MAX_LEN characters"
+        }
+
+        require(value.matches(NAME_REGEX.toRegex())) {
+            "name contains invalid characters or format"
+        }
     }
 
     companion object NameGenerator {
