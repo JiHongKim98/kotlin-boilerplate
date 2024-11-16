@@ -1,0 +1,91 @@
+server:
+  node: 1
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+
+  task:
+    execution:
+      pool:
+        max-size: 10
+        core-size: 10
+        queue-capacity: 10
+        keep-alive: 30s
+      shutdown:
+        await-termination: true
+        await-termination-period: 5s
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+  cookie:
+    path: /
+    max-age: 9876543210
+    same-site: Lax
+    domain: localhost
+    secure: false
+    http-only: true
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+    open-in-view: false
+
+  flyway:
+    url: jdbc:mysql://localhost:3306/example?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    user: example
+    password: example
+    baseline-on-migrate: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/example?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: example
+    password: example
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      repositories:
+        enabled: false
+
+  security:
+    oauth2:
+      success-redirect-url: http://localhost:5173
+      client:
+        registration:
+          kakao:
+            client-authentication-method: client_secret_post
+            client-id: test-client-id
+            client-secret: test-client-secret
+            redirect-uri: https://test.com
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            scope:
+              - profile_nickname
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret-key: test-test-test-test-test-test-test-test-test-test
+  access-exp: 987654321
+  refresh-exp: 987654321
+
+logging:
+  level:
+    root: info
