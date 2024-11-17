@@ -15,30 +15,28 @@ class UserServiceTest(
     private val userService: UserService,
     private val userRepository: UserRepository,
 ) : BehaviorSpec({
-
     listeners(MysqlCleaner())
 
-    Given("userService에서") {
+    Given("findUserInfoByUserId 메서드는") {
+        val userId = 123456789L
 
-        When("존재하는 user id를 조회하면") {
-            val userId = 1234567890L
-            val user = userRepository.save(createUser(userId = userId))
+        When("저장된 유저의 식별자로 조회한다면") {
+            val savedUser = createUser(userId = userId)
+                .run { userRepository.save(this) }
 
             val sut = userService.findUserInfoByUserId(userId)
 
-            Then("사용자 정보가 반환된다") {
+            Then("유저 정보가 반환된다") {
                 sut.shouldNotBeNull()
-                sut.name shouldBe user.name.value
+                sut.name shouldBe savedUser.name.value
                 sut.userId shouldBe userId
             }
         }
 
-        When("존재하지 않는 user id를 조회하면") {
-            val nonExistentUserId = -1L
-
-            Then("UserNotExistsException 예외가 발생한다") {
+        When("저장되지 않은 유저의 식별자로 조회하면") {
+            Then("예외가 발생한다") {
                 shouldThrow<UserNotExistsException> {
-                    userService.findUserInfoByUserId(nonExistentUserId)
+                    userService.findUserInfoByUserId(userId)
                 }
             }
         }
