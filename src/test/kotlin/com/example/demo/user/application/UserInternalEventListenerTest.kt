@@ -6,7 +6,6 @@ import com.example.demo.support.MysqlCleaner
 import com.example.demo.user.domain.repository.UserRepository
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.transaction.PlatformTransactionManager
@@ -19,7 +18,6 @@ class UserInternalEventListenerTest(
     private val transactionManager: PlatformTransactionManager,
 ) : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
-    extensions(SpringExtension)
     listeners(MysqlCleaner())
 
     Given("authUserCreateListener 메서드는") {
